@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@700&family=Literata:opsz,wght@7..72,700;7..72,800;7..72,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: #f6f4eb;
+  color: #1b1c17;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── Custom cursor ─────────────────────────────── */
+.cursor-dot {
+  width: 8px; height: 8px; background: #1f3500; border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%); transition: width .15s, height .15s;
+}
+.cursor-ring {
+  width: 36px; height: 36px; border: 2px solid #1f3500; border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%); transition: width .25s, height .25s, background .2s, border-color .2s;
+}
+.cursor-ring.is-hover  { width: 56px; height: 56px; background: rgba(31,53,0,.07); }
+.cursor-ring.is-grab   { border-color: #4d6629; }
+
+/* ── Neo shadows ───────────────────────────────── */
+.neo-shadow    { box-shadow: 6px 6px 0 0 #344c11; }
+.neo-shadow-sm { box-shadow: 3px 3px 0 0 #344c11; }
+.neo-shadow-lg { box-shadow: 10px 10px 0 0 #344c11; }
+
+/* ── Scroll reveal ─────────────────────────────── */
+.reveal, .reveal-left, .reveal-right {
+  transition: opacity .8s ease, transform .8s ease;
+}
+.reveal       { opacity: 0; transform: translateY(40px); }
+.reveal-left  { opacity: 0; transform: translateX(-60px); }
+.reveal-right { opacity: 0; transform: translateX(60px); }
+.reveal.in, .reveal-left.in, .reveal-right.in { opacity: 1; transform: none; }
+
+/* stagger children */
+.stagger > * { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+.stagger.in > *:nth-child(1) { opacity:1; transform:none; transition-delay:.05s; }
+.stagger.in > *:nth-child(2) { opacity:1; transform:none; transition-delay:.15s; }
+.stagger.in > *:nth-child(3) { opacity:1; transform:none; transition-delay:.25s; }
+.stagger.in > *:nth-child(4) { opacity:1; transform:none; transition-delay:.35s; }
+.stagger.in > *:nth-child(5) { opacity:1; transform:none; transition-delay:.45s; }
+.stagger.in > *:nth-child(6) { opacity:1; transform:none; transition-delay:.55s; }
+
+/* ── Stat cards ────────────────────────────────── */
+.stat-init-1 { opacity:0; transform: translateX(-80px) rotate(-7deg) scale(.9); }
+.stat-init-2 { opacity:0; transform: translateY(-70px) rotate(6deg)  scale(.88); }
+.stat-init-3 { opacity:0; transform: translateX(80px)  rotate(9deg)  scale(.9); }
+.stat-init-4 { opacity:0; transform: translateY(80px)  rotate(-5deg) scale(.88); }
+.stat-settled {
+  opacity:1 !important; transform: none !important;
+  transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1) !important;
+}
+.stat-settled:nth-child(2) { transition-delay:.15s !important; }
+.stat-settled:nth-child(3) { transition-delay:.30s !important; }
+.stat-settled:nth-child(4) { transition-delay:.45s !important; }
+
+.stat-card:hover { background: #1f3500 !important; border-color: #ceeda0 !important; }
+.stat-card:hover .stat-num   { color: #ceeda0 !important; }
+.stat-card:hover .stat-label { color: #b2d187 !important; }
+.stat-card:hover .stat-arrow { color: #b2d187 !important; }
+
+/* ── Flip card ─────────────────────────────────── */
+.flip-wrapper  { perspective: 900px; }
+.flip-inner    { position: relative; transform-style: preserve-3d; transition: transform .65s cubic-bezier(.23,1,.32,1); }
+.flip-inner.flipped { transform: rotateY(180deg); }
+.flip-front, .flip-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip-back { position: absolute; inset: 0; transform: rotateY(180deg); }
+
+/* ── Roadmap slide-in ──────────────────────────── */
+@keyframes roadmapSlide {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: none; }
+}
+.roadmap-slide { animation: roadmapSlide .45s ease both; }
+
+/* ── Bell ring ─────────────────────────────────── */
+@keyframes bellRingAnim {
+  0%   { transform: rotate(0); }
+  10%  { transform: rotate(20deg) scale(1.1); }
+  20%  { transform: rotate(-18deg) scale(1.1); }
+  30%  { transform: rotate(15deg); }
+  50%  { transform: rotate(-8deg); }
+  70%  { transform: rotate(4deg); }
+  100% { transform: rotate(0); }
+}
+.bell-ringing { animation: bellRingAnim 1s cubic-bezier(.36,.07,.19,.97) both; }
+
+/* ── Float animations ──────────────────────────── */
+@keyframes float        { 0%,100%{ transform:translateY(0); }        50%{ transform:translateY(-14px); } }
+@keyframes floatRotate  { 0%,100%{ transform:translateY(0) rotate(-1deg); } 50%{ transform:translateY(-10px) rotate(1deg); } }
+.float-1 { animation: float       6s ease-in-out infinite; }
+.float-2 { animation: floatRotate 7s ease-in-out 1s infinite; }
+.float-3 { animation: float       5s ease-in-out 2s infinite; }
+
+/* ── Ping dot ──────────────────────────────────── */
+@keyframes ping { 75%,100%{ transform:scale(2); opacity:0; } }
+.ping-dot { animation: ping 1.2s cubic-bezier(0,0,.2,1) infinite; }
+
+/* ── Year badge ────────────────────────────────── */
+.year-badge {
+  background: #ceeda0; color: #1f3500;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  padding: 2px 8px; border-radius: 9999px; letter-spacing: .05em;
+  display: inline-block;
+}
