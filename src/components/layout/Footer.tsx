@@ -1,3 +1,6 @@
+"use client";
+import React from "react";
+
 export default function Footer() {
   return (
     <footer className="w-full py-section-gap px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-gutter border-t-2 border-primary bg-surface-container-low">

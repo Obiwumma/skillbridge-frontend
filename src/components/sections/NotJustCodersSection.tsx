@@ -1,6 +1,9 @@
 "use client";
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
+import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
+// Original Homepage Cards assets
 const CARDS = [
   { degree:"LL.B",  field:"Law",        icon:"⚖️",  techRole:"Legal Tech",   techField:"Compliance PM",    techIcon:"🔐", anim:"animate-float" },
   { degree:"B.Sc",  field:"Accounting", icon:"📊",  techRole:"Fintech PM",   techField:"Product Manager",  techIcon:"💳", anim:"animate-float-2" },
@@ -53,6 +56,103 @@ function Card({ card }: { card: typeof CARDS[0] }) {
 }
 
 export default function NotJustCodersSection() {
+  const pathname = usePathname();
+  const isMentors = pathname === "/mentors";
+
+  if (isMentors) {
+    return (
+      <section className="max-w-screen-xl mx-auto px-container-margin py-24 relative overflow-hidden">
+        <motion.div 
+          className="text-center mb-16 relative z-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="font-headline-lg text-headline-lg text-primary mb-4">
+            The Philosophy of the Bridge
+          </h2>
+          <div className="w-24 h-1 bg-secondary mx-auto"></div>
+        </motion.div>
+        
+        <div className="flex flex-wrap justify-center gap-12 lg:gap-24 relative z-10">
+          {/* Scrap 1 */}
+          <motion.div 
+            className="bg-white/90 p-8 w-72 shadow-lg border-t border-l border-white/50 relative float-1 cursor-pointer"
+            style={{ originX: 0.5, originY: 0.5 }}
+            initial={{ opacity: 0, scale: 0.9, rotate: -6 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: -4 }}
+            viewport={{ once: true }}
+            whileHover={{ 
+              rotate: -2,
+              scale: 1.03,
+              boxShadow: "0px 10px 20px rgba(0,0,0,0.15)",
+              transition: { duration: 0.2 }
+            }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <span className="material-symbols-outlined absolute -top-4 -left-4 text-secondary text-4xl">
+              format_quote
+            </span>
+            <p className="font-emphasis-script text-primary text-lg leading-relaxed">
+              &quot;A mentor isn&apos;t a map; they are the lantern that shows you the first step in the dark.&quot;
+            </p>
+            <div className="mt-4 text-right">
+              <span className="font-label-caps text-[10px] text-outline italic">— THE BRIDGE MANIFESTO</span>
+            </div>
+          </motion.div>
+          
+          {/* Scrap 2 */}
+          <motion.div 
+            className="bg-surface-container-high p-8 w-80 shadow-lg border-b-2 border-primary/20 float-2 cursor-pointer"
+            style={{ originX: 0.5, originY: 0.5 }}
+            initial={{ opacity: 0, scale: 0.9, rotate: 1 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 3 }}
+            viewport={{ once: true }}
+            whileHover={{ 
+              rotate: 0,
+              scale: 1.03,
+              boxShadow: "0px 10px 20px rgba(0,0,0,0.15)",
+              transition: { duration: 0.2 }
+            }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <p className="font-emphasis-script text-primary text-lg leading-relaxed">
+              &quot;Growth happens at the edge of your comfort zone, but a mentor ensures you don&apos;t fall off the cliff.&quot;
+            </p>
+            <div className="mt-4 text-right">
+              <span className="font-label-caps text-[10px] text-outline italic">— CAREER ROOTS</span>
+            </div>
+          </motion.div>
+          
+          {/* Scrap 3 */}
+          <motion.div 
+            className="bg-[#f5f4ee] p-8 w-72 shadow-md border-r-4 border-secondary/30 float-3 cursor-pointer"
+            style={{ originX: 0.5, originY: 0.5 }}
+            initial={{ opacity: 0, scale: 0.9, rotate: -4 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: -2 }}
+            viewport={{ once: true }}
+            whileHover={{ 
+              rotate: 0,
+              scale: 1.03,
+              boxShadow: "0px 10px 20px rgba(0,0,0,0.15)",
+              transition: { duration: 0.2 }
+            }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <p className="font-emphasis-script text-primary text-lg leading-relaxed">
+              &quot;We don&apos;t teach skills; we share instincts earned through a thousand failures.&quot;
+            </p>
+            <div className="mt-4 text-right">
+              <span className="font-label-caps text-[10px] text-outline italic">— ANONYMOUS MENTOR</span>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    );
+  }
+
+  // Original "Not Just Coders" Layout for Home Page
   return (
     <section className="py-section-gap">
       <div className="text-center mb-16 reveal">

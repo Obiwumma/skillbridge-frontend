@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import CustomCursor from "@/components/layout/CustomCursor";
 
 export const metadata: Metadata = {
   title: "SkillBridge — Bridge the gap between your degree and your first tech job",
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-surface-container-low text-on-surface font-body-md overflow-x-hidden selection:bg-primary-container selection:text-on-primary">
+        <CustomCursor />
         {children}
       </body>
     </html>

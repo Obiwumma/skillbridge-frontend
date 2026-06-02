@@ -34,13 +34,15 @@ body {
 .neo-shadow-lg { box-shadow: 10px 10px 0 0 #344c11; }
 
 /* ── Scroll reveal ─────────────────────────────── */
-.reveal, .reveal-left, .reveal-right {
+.reveal, .reveal-left, .reveal-right, .stagger-reveal {
   transition: opacity .8s ease, transform .8s ease;
 }
 .reveal       { opacity: 0; transform: translateY(40px); }
 .reveal-left  { opacity: 0; transform: translateX(-60px); }
 .reveal-right { opacity: 0; transform: translateX(60px); }
-.reveal.in, .reveal-left.in, .reveal-right.in { opacity: 1; transform: none; }
+.stagger-reveal { opacity: 0; transform: translateY(40px); }
+.reveal.in, .reveal-left.in, .reveal-right.in,
+.reveal.visible, .reveal-left.visible, .reveal-right.visible, .stagger-reveal.visible { opacity: 1; transform: none; }
 
 /* stagger children */
 .stagger > * { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
@@ -113,3 +115,172 @@ body {
   padding: 2px 8px; border-radius: 9999px; letter-spacing: .05em;
   display: inline-block;
 }
+
+/* ── Paper Odyssey custom styling ──────────────── */
+.bg-background {
+  background-color: #faf9f3;
+  background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
+}
+.bg-tertiary-fixed-dim {
+  background-color: #f6be39;
+}
+.paper-lift {
+  box-shadow: 4px 4px 0px 0px #253614;
+}
+.paper-lift-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #253614;
+}
+.paper-lift-active:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px #253614;
+}
+.washi-tape {
+  position: relative;
+  background: #f6be39;
+  clip-path: polygon(2% 0%, 98% 1%, 100% 15%, 99% 85%, 100% 100%, 0% 100%, 1% 85%, 0% 15%);
+}
+.scribble-underline {
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='20' viewBox='0 0 200 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 15C20 10 180 10 198 15' stroke='%239b433c' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: bottom;
+}
+.torn-edge {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 95%, 98% 97%, 95% 94%, 92% 98%, 88% 94%, 85% 97%, 80% 93%, 75% 98%, 70% 94%, 65% 97%, 60% 92%, 55% 98%, 50% 93%, 45% 97%, 40% 93%, 35% 98%, 30% 94%, 25% 97%, 20% 92%, 15% 98%, 10% 93%, 5% 97%, 0% 94%);
+}
+.post-it {
+  background-color: #fef3c7;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+}
+.journal-entry {
+  background: #fff;
+  border-left: 2px solid #e5e7eb;
+  background-image: repeating-linear-gradient(#fff, #fff 31px, #e5e7eb 31px, #e5e7eb 32px);
+}
+
+/* ── Mentor Application Page Custom Styles ── */
+.journal-input {
+  border-bottom: 2px solid #253614;
+  background: transparent;
+  width: 100%;
+  padding: 8px 0;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+.journal-input:focus {
+  border-bottom-color: #9b433c;
+}
+
+.washi-tape-interactive {
+  background-color: #f6be39;
+  padding: 4px 12px;
+  clip-path: polygon(2% 0%, 98% 1%, 100% 50%, 98% 100%, 2% 99%, 0% 50%);
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s, color 0.2s;
+}
+.washi-tape-interactive:hover {
+  transform: rotate(-1deg) scale(1.05);
+}
+.washi-tape-interactive-active {
+  background-color: #fd8f85 !important;
+  color: white !important;
+  transform: rotate(1deg);
+}
+
+.stamp-button {
+  border: 2px solid #253614;
+  position: relative;
+  transition: all 0.1s ease;
+}
+.stamp-button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0px 0px #253614;
+}
+.stamp-button:active {
+  transform: translate(0, 0);
+  box-shadow: 0px 0px 0px 0px #253614;
+}
+
+.crumpled-paper {
+  background-image: radial-gradient(#e3e3dd 1px, transparent 1px);
+  background-size: 20px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.crumpled-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("https://www.transparenttextures.com/patterns/p6.png");
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.botanical-divider {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #253614;
+  opacity: 0.3;
+}
+
+.note-card-lined {
+  background-image: linear-gradient(#e3e3dd 1px, transparent 1px);
+  background-size: 100% 2.5rem;
+  border: 1.5px solid #253614;
+}
+
+.squiggle-underline {
+  position: relative;
+  z-index: 1;
+}
+.squiggle-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 12px;
+  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path d="M0 10 Q 12.5 0 25 10 T 50 10 T 75 10 T 100 10" stroke="%239b433c" stroke-width="4" fill="transparent"/></svg>');
+  background-size: 60px 12px;
+  z-index: -1;
+}
+
+/* ── CV Analyzer Page Custom Styles ── */
+.glass-panel {
+  backdrop-filter: blur(16px);
+  background: rgba(37, 54, 20, 0.85);
+  border: 1px solid rgba(184, 206, 158, 0.2);
+}
+.bento-card {
+  background: #ffffff;
+  border: 1px solid rgba(59, 77, 40, 0.15);
+  box-shadow: 0 20px 25px -5px rgba(37, 54, 20, 0.05), 0 10px 10px -5px rgba(37, 54, 20, 0.02);
+}
+.glow-button:hover {
+  box-shadow: 0 0 20px rgba(81, 100, 61, 0.4);
+}
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background: #b8ce9e;
+  animation: blink-cursor 1s infinite;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.mesh-bg {
+  background-color: #faf9f3;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(212, 234, 184, 0.3) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(220, 231, 200, 0.3) 0px, transparent 50%);
+}
+
+
