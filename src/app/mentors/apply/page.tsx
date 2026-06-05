@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -14,6 +15,10 @@ const EXPERTISE_TAGS = [
 ];
 
 export default function MentorApplyPage() {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+
   // Form states
   const [fullName, setFullName] = useState("");
   const [currentRole, setCurrentRole] = useState("");
@@ -21,7 +26,7 @@ export default function MentorApplyPage() {
   const [experience, setExperience] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>(["FINTECH"]);
   const [focusedField, setFocusedField] = useState<string | null>(null);
-  
+
   // File upload state
   const [fileName, setFileName] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -65,19 +70,31 @@ export default function MentorApplyPage() {
   // Submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Thank you, ${fullName}! Your mentor dossier has been submitted successfully.`);
+    if (!fullName || !currentRole || !linkedinUrl) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    setIsSubmitting(true);
+    
+    // Simulate verification/approval and redirect
+    setTimeout(() => {
+      setIsApproved(true);
+      setTimeout(() => {
+        router.push("/mentor/dashboard");
+      }, 2000);
+    }, 1500);
   };
 
   return (
     <div className="bg-background text-on-surface paper-texture relative min-h-screen overflow-x-hidden selection:bg-secondary/30">
       {/* Background Botanical Overlay */}
-      <span 
+      <span
         className="material-symbols-outlined absolute top-[15%] -left-10 rotate-12 pointer-events-none opacity-5 z-0 text-[180px]"
         style={{ fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24" }}
       >
         eco
       </span>
-      <span 
+      <span
         className="material-symbols-outlined absolute bottom-[20%] right-20 rotate-45 pointer-events-none opacity-5 z-0 text-[180px]"
         style={{ fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24" }}
       >
@@ -87,17 +104,17 @@ export default function MentorApplyPage() {
       <Navbar />
 
       <main className="max-w-[1200px] mx-auto px-lg pt-32 pb-xl relative z-10">
-        
+
         {/* Hero Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-xl mb-xl items-center">
-          <motion.div 
+          <motion.div
             className="lg:col-span-7"
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7 }}
           >
             <h1 className="font-display-lg text-display-lg text-primary mb-md leading-[1.1] text-5xl lg:text-6xl font-extrabold">
-              Guide the <br/>
+              Guide the <br />
               <span className="italic font-emphasis-script text-secondary underline decoration-primary/20">
                 Next Generation
               </span>
@@ -107,7 +124,7 @@ export default function MentorApplyPage() {
             </p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="lg:col-span-5 relative"
             initial={{ opacity: 0, scale: 0.95, rotate: 0 }}
             animate={{ opacity: 1, scale: 1, rotate: 2 }}
@@ -115,8 +132,8 @@ export default function MentorApplyPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <div className="note-card-lined bg-surface-container-low p-6 rounded-lg paper-lift shadow-md transition-transform duration-300">
-              <img 
-                className="w-full h-48 object-cover rounded mb-md border border-primary/20" 
+              <img
+                className="w-full h-48 object-cover rounded mb-md border border-primary/20"
                 alt="A warm, overhead shot of a wooden table featuring an open paper journal, a vintage fountain pen, and a small green plant."
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuD24-gKW_lCXTYkXqvB8mU3HdhHjQBMMwSQdJ-tLBLW0CqlXVMnXXtroNIUu0xJ1WFrh3SiGi1J5uzW-lr_VTtKJ8tCp8FcLIEmZ-QrkfGlQjFVioFOE84Hy623CaTrmZa2Cm1aIJ5qMvBEjAiy443gAHnHYEChULsGRbSxEsOwO9XjQzrRj5Fmvt51Y3KQmDaT3FSXqmECBdu7sbU4eWeNwGMRuZp3JdXzaqTTKDbekh1m19kYjwyosPs-MvRWSw-3evsGcR_z3-He"
               />
@@ -140,7 +157,7 @@ export default function MentorApplyPage() {
 
         {/* Application Form */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-xl">
-          <motion.div 
+          <motion.div
             className="lg:col-span-8"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -150,20 +167,19 @@ export default function MentorApplyPage() {
               <h2 className="font-headline-lg text-headline-lg text-primary mb-10 font-bold border-b border-primary/10 pb-4">
                 Mentor Dossier
               </h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-12 mb-10">
                 {/* Full Name */}
                 <div className="flex flex-col gap-sm">
-                  <label 
-                    className={`font-label-caps text-xs tracking-wider font-bold transition-colors duration-200 ${
-                      focusedField === "fullName" ? "text-secondary" : "text-primary"
-                    }`}
+                  <label
+                    className={`font-label-caps text-xs tracking-wider font-bold transition-colors duration-200 ${focusedField === "fullName" ? "text-secondary" : "text-primary"
+                      }`}
                   >
                     FULL NAME
                   </label>
-                  <input 
-                    className="journal-input font-body-md" 
-                    placeholder="e.g. Julian Thorne" 
+                  <input
+                    className="journal-input font-body-md"
+                    placeholder="e.g. Julian Thorne"
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
@@ -175,16 +191,15 @@ export default function MentorApplyPage() {
 
                 {/* Current Role */}
                 <div className="flex flex-col gap-sm">
-                  <label 
-                    className={`font-label-caps text-xs tracking-wider font-bold transition-colors duration-200 ${
-                      focusedField === "currentRole" ? "text-secondary" : "text-primary"
-                    }`}
+                  <label
+                    className={`font-label-caps text-xs tracking-wider font-bold transition-colors duration-200 ${focusedField === "currentRole" ? "text-secondary" : "text-primary"
+                      }`}
                   >
                     CURRENT ROLE
                   </label>
-                  <input 
-                    className="journal-input font-body-md" 
-                    placeholder="e.g. Principal Architect" 
+                  <input
+                    className="journal-input font-body-md"
+                    placeholder="e.g. Principal Architect"
                     type="text"
                     value={currentRole}
                     onChange={(e) => setCurrentRole(e.target.value)}
@@ -196,16 +211,15 @@ export default function MentorApplyPage() {
 
                 {/* LinkedIn URL */}
                 <div className="flex flex-col gap-sm">
-                  <label 
-                    className={`font-label-caps text-xs tracking-wider font-bold transition-colors duration-200 ${
-                      focusedField === "linkedinUrl" ? "text-secondary" : "text-primary"
-                    }`}
+                  <label
+                    className={`font-label-caps text-xs tracking-wider font-bold transition-colors duration-200 ${focusedField === "linkedinUrl" ? "text-secondary" : "text-primary"
+                      }`}
                   >
                     LINKEDIN URL
                   </label>
-                  <input 
-                    className="journal-input font-body-md" 
-                    placeholder="linkedin.com/in/username" 
+                  <input
+                    className="journal-input font-body-md"
+                    placeholder="linkedin.com/in/username"
                     type="url"
                     value={linkedinUrl}
                     onChange={(e) => setLinkedinUrl(e.target.value)}
@@ -217,16 +231,15 @@ export default function MentorApplyPage() {
 
                 {/* Years of Experience */}
                 <div className="flex flex-col gap-sm">
-                  <label 
-                    className={`font-label-caps text-xs tracking-wider font-bold transition-colors duration-200 ${
-                      focusedField === "experience" ? "text-secondary" : "text-primary"
-                    }`}
+                  <label
+                    className={`font-label-caps text-xs tracking-wider font-bold transition-colors duration-200 ${focusedField === "experience" ? "text-secondary" : "text-primary"
+                      }`}
                   >
                     YEARS OF EXPERIENCE
                   </label>
-                  <input 
-                    className="journal-input font-body-md" 
-                    placeholder="10+" 
+                  <input
+                    className="journal-input font-body-md"
+                    placeholder="10+"
                     type="text"
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
@@ -250,9 +263,8 @@ export default function MentorApplyPage() {
                         key={tag}
                         type="button"
                         onClick={() => toggleTag(tag)}
-                        className={`washi-tape-interactive font-label-caps text-xs font-bold ${
-                          isActive ? "washi-tape-interactive-active" : ""
-                        }`}
+                        className={`washi-tape-interactive font-label-caps text-xs font-bold ${isActive ? "washi-tape-interactive-active" : ""
+                          }`}
                       >
                         {tag}
                       </button>
@@ -266,28 +278,26 @@ export default function MentorApplyPage() {
                 <label className="font-label-caps text-xs tracking-wider font-bold text-primary mb-4 block">
                   VERIFICATION (WORK ID / CERTIFICATIONS)
                 </label>
-                <div 
+                <div
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                   onClick={triggerFileSelect}
-                  className={`border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center text-center transition-colors cursor-pointer group ${
-                    isDragOver 
-                      ? "border-secondary bg-secondary-container/10" 
+                  className={`border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center text-center transition-colors cursor-pointer group ${isDragOver
+                      ? "border-secondary bg-secondary-container/10"
                       : "border-primary/40 bg-surface-container hover:border-primary"
-                  }`}
+                    }`}
                 >
-                  <input 
-                    type="file" 
-                    ref={fileInputRef} 
+                  <input
+                    type="file"
+                    ref={fileInputRef}
                     onChange={handleFileChange}
-                    className="hidden" 
+                    className="hidden"
                     accept=".pdf,.jpg,.jpeg,.png"
                   />
-                  
-                  <span className={`material-symbols-outlined text-5xl mb-3 transition-colors ${
-                    isDragOver ? "text-secondary" : "text-primary/40 group-hover:text-primary"
-                  }`}>
+
+                  <span className={`material-symbols-outlined text-5xl mb-3 transition-colors ${isDragOver ? "text-secondary" : "text-primary/40 group-hover:text-primary"
+                    }`}>
                     upload_file
                   </span>
 
@@ -322,8 +332,8 @@ export default function MentorApplyPage() {
 
               {/* Submit button */}
               <div className="flex justify-end">
-                <motion.button 
-                  className="stamp-button bg-secondary text-white px-8 py-4 font-label-caps text-xs font-bold tracking-widest flex items-center gap-2" 
+                <motion.button
+                  className="stamp-button bg-secondary text-white px-8 py-4 font-label-caps text-xs font-bold tracking-widest flex items-center gap-2"
                   type="submit"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -337,7 +347,7 @@ export default function MentorApplyPage() {
 
           {/* Sidebar / Info */}
           <div className="lg:col-span-4 flex flex-col gap-lg">
-            <motion.div 
+            <motion.div
               className="note-card-lined bg-primary text-white p-6 rounded-lg rotate-1 paper-lift shadow-md"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -348,17 +358,17 @@ export default function MentorApplyPage() {
               </h3>
               <ul className="flex flex-col gap-4">
                 <li className="flex items-start gap-sm">
-                  <span 
-                    className="material-symbols-outlined text-primary-fixed mt-1 text-xs" 
+                  <span
+                    className="material-symbols-outlined text-primary-fixed mt-1 text-xs"
                     style={{ fontVariationSettings: "'FILL' 1" }}
                   >
                     fiber_manual_record
                   </span>
-                  <p className="font-body-md text-sm">Share 2 hours of your time per month.</p>
+                  <p className="font-body-md text-sm">Share 2 hours of your time per week.</p>
                 </li>
                 <li className="flex items-start gap-sm">
-                  <span 
-                    className="material-symbols-outlined text-primary-fixed mt-1 text-xs" 
+                  <span
+                    className="material-symbols-outlined text-primary-fixed mt-1 text-xs"
                     style={{ fontVariationSettings: "'FILL' 1" }}
                   >
                     fiber_manual_record
@@ -366,8 +376,8 @@ export default function MentorApplyPage() {
                   <p className="font-body-md text-sm">Provide honest, tactical feedback.</p>
                 </li>
                 <li className="flex items-start gap-sm">
-                  <span 
-                    className="material-symbols-outlined text-primary-fixed mt-1 text-xs" 
+                  <span
+                    className="material-symbols-outlined text-primary-fixed mt-1 text-xs"
                     style={{ fontVariationSettings: "'FILL' 1" }}
                   >
                     fiber_manual_record
@@ -377,7 +387,7 @@ export default function MentorApplyPage() {
               </ul>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="p-6 border border-primary/20 rounded-lg bg-surface-container-high/30"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -405,8 +415,8 @@ export default function MentorApplyPage() {
             <p className="font-body-lg text-on-surface-variant mb-8 italic text-lg">
               For those with 20+ years of expertise looking for executive-level board opportunities.
             </p>
-            <motion.a 
-              className="stamp-button bg-primary text-white px-8 py-4 font-label-caps text-xs font-bold tracking-widest inline-block shadow-sm" 
+            <motion.a
+              className="stamp-button bg-primary text-white px-8 py-4 font-label-caps text-xs font-bold tracking-widest inline-block shadow-sm"
               href="#"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -418,6 +428,78 @@ export default function MentorApplyPage() {
       </section>
 
       <Footer />
+
+      <AnimatePresence>
+        {isSubmitting && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-[#FAF9F3] border-2 border-[#1F3500] max-w-md w-full p-8 rounded-2xl shadow-xl flex flex-col items-center text-center relative overflow-hidden"
+              style={{
+                backgroundImage: "url('https://www.transparenttextures.com/patterns/natural-paper.png')",
+              }}
+            >
+              {/* Plant overlay shadow in card */}
+              <span
+                className="material-symbols-outlined absolute -left-4 -top-4 text-[#3B4D28]/5 text-7xl select-none pointer-events-none"
+                style={{ fontVariationSettings: "'FILL' 0" }}
+              >
+                eco
+              </span>
+
+              {/* Status Header */}
+              <div className="washi-tape bg-[#F6BE39] text-[#1F3500] text-[10px] font-black font-label-caps tracking-widest px-4 py-1.5 rotate-1 mb-6 shadow-sm uppercase">
+                {!isApproved ? "VERIFYING DOSSIER" : "STATUS: APPROVED"}
+              </div>
+
+              {!isApproved ? (
+                <div className="flex flex-col items-center gap-4 py-4">
+                  {/* Loading spinner */}
+                  <div className="w-12 h-12 border-4 border-[#1F3500]/20 border-t-[#1F3500] rounded-full animate-spin"></div>
+                  <h3 className="font-headline-md text-[#1F3500] text-lg font-black mt-2">
+                    Analyzing Experience
+                  </h3>
+                  <p className="text-sm text-[#51643D] leading-relaxed">
+                    Cross-referencing LinkedIn profile and credentials with the SkillBridge registry...
+                  </p>
+                </div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex flex-col items-center gap-4 py-2"
+                >
+                  {/* Verified Checkmark Icon */}
+                  <motion.div
+                    initial={{ scale: 0.5, rotate: -20 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: "spring", stiffness: 200 }}
+                    className="w-16 h-16 bg-[#D4EAB8] border-2 border-[#1F3500] rounded-full flex items-center justify-center shadow-inner"
+                  >
+                    <span className="material-symbols-outlined text-[#1F3500] text-3xl font-black">
+                      verified
+                    </span>
+                  </motion.div>
+
+                  <h3 className="font-headline-md text-[#1F3500] text-xl font-black mt-2">
+                    Welcome to the Fellowship!
+                  </h3>
+                  <p className="text-sm text-[#51643D] leading-relaxed">
+                    Thank you, <strong className="text-[#1F3500]">{fullName}</strong>. Your application has been approved. Redirecting you to your active odysseys...
+                  </p>
+                </motion.div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
