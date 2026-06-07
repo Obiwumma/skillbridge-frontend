@@ -1,0 +1,488 @@
+# SkillBridge — Frontend
+
+> **Landing page + frontend scaffold for SkillBridge v2.0**
+> Built with **Next.js · TypeScript · Tailwind CSS · Zustand · TanStack Query · WebSocket**
+
+---
+
+## Overview
+
+SkillBridge v2.0 is a modern frontend architecture for a realtime skill-development and recruitment platform.
+This repository contains the public-facing landing page, shared frontend infrastructure, API abstraction layer, realtime socket integration, global state management, and scalable UI architecture.
+
+The stack is designed for:
+
+* High-performance rendering
+* Modular scalability
+* Clean separation of concerns
+* Realtime interactions
+* Backend-first architecture
+* Production-grade frontend patterns
+
+---
+
+# Tech Stack
+
+| Layer        | Technology               |
+| ------------ | ------------------------ |
+| Framework    | Next.js 15               |
+| Language     | TypeScript               |
+| Styling      | Tailwind CSS             |
+| Client State | Zustand                  |
+| Server State | TanStack Query           |
+| HTTP Client  | Axios                    |
+| Realtime     | Native WebSocket         |
+| Animations   | CSS + Framer Motion      |
+| Architecture | Feature/component driven |
+
+---
+
+# Quick Start
+
+## Install Dependencies
+
+```bash
+npm install
+```
+
+## Start Development Server
+
+```bash
+npm run dev
+```
+
+Application runs at:
+
+```txt
+http://localhost:3000
+```
+
+## Production Build
+
+```bash
+npm run build
+```
+
+## Type Checking
+
+```bash
+npx tsc --noEmit
+```
+
+---
+
+# Project Structure
+
+```txt
+src/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+│
+├── components/
+│   ├── layout/
+│   │   ├── Navbar.tsx
+│   │   └── Footer.tsx
+│   │
+│   └── sections/
+│       ├── HeroSection.tsx
+│       ├── StatsSection.tsx
+│       ├── NotJustCodersSection.tsx
+│       ├── RecruiterSection.tsx
+│       ├── AuditSection.tsx
+│       ├── RoadmapSection.tsx
+│       └── PartnersSection.tsx
+│
+├── hooks/
+│   ├── useCursor.ts
+│   ├── useScrollReveal.ts
+│   └── useWebSocket.ts
+│
+├── store/
+│   └── index.ts
+│
+├── services/
+│   └── api/
+│       ├── client.ts
+│       ├── auth.service.ts
+│       └── profile.service.ts
+│
+├── types/
+│   └── index.ts
+│
+└── lib/
+    └── query-provider.tsx
+```
+
+---
+
+# Section Breakdown
+
+## HeroSection
+
+Primary landing hero with:
+
+* Dynamic headline
+* CTA buttons
+* Animated background
+* Motion-based entrance effects
+* Responsive typography scaling
+
+---
+
+## StatsSection
+
+Interactive metrics showcase featuring:
+
+* Randomized slide-in animation
+* Rotation transitions
+* Hover inversion effects
+* Scroll-triggered reveal
+* Dark green active hover states
+
+---
+
+## NotJustCodersSection
+
+Floating flip-card interface for showcasing:
+
+* Multiple learning paths
+* Draggable interactions
+* Front/back card transforms
+* Floating idle animations
+* Interactive cursor states
+
+---
+
+## RecruiterSection
+
+Enterprise-facing recruitment module featuring:
+
+* Bell notification animation
+* Web Audio API chime playback
+* Wide-card responsive layout
+* Scroll-activated interactions
+
+---
+
+## AuditSection
+
+Skill analysis and assessment UI:
+
+* Animated SVG score circle
+* Numeric counter-up animation
+* Staggered skill-bar fills
+* Scroll-based activation logic
+
+---
+
+## RoadmapSection
+
+Auto-playing module showcase system:
+
+* Cycles through modules 1–5
+* Smooth slideshow transitions
+* State-driven progression UI
+* Responsive timeline layout
+
+---
+
+## PartnersSection
+
+Partner/company showcase section supporting:
+
+* Logo grids
+* Infinite marquees
+* Responsive wrapping
+* Trust indicators
+
+---
+
+# Architecture Principles
+
+## API Layer Isolation
+
+All HTTP communication is centralized inside:
+
+```txt
+services/api/client.ts
+```
+
+### Rules
+
+* No direct `fetch()` inside components
+* No inline Axios calls in UI
+* All requests pass through service modules
+* Centralized interceptors for auth + CSRF
+
+---
+
+## Authentication Strategy
+
+### Security Rules
+
+* JWTs stored only in HttpOnly cookies
+* CSRF token validation enabled
+* No localStorage auth persistence
+* Backend remains source of truth
+
+---
+
+## State Management
+
+### Zustand
+
+Used for:
+
+* User session state
+* UI preferences
+* Notifications
+* Roadmap progress
+* Temporary client state
+
+### TanStack Query
+
+Used for:
+
+* Server synchronization
+* Request caching
+* Mutations
+* Background refetching
+* Optimistic updates
+
+---
+
+## Realtime Architecture
+
+`useWebSocket.ts` provides:
+
+* Auto reconnect
+* Connection health checks
+* Event subscriptions
+* Typed WS events
+* Message dispatching
+
+### Example Event
+
+```json
+{
+  "type": "notification",
+  "payload": {
+    "message": "New recruiter interest"
+  }
+}
+```
+
+---
+
+# Animation System
+
+Global animations are stored inside:
+
+```txt
+app/globals.css
+```
+
+## Included Effects
+
+| Animation       | Usage                  |
+| --------------- | ---------------------- |
+| `.reveal`       | Standard scroll reveal |
+| `.reveal-left`  | Left-to-right entrance |
+| `.reveal-right` | Right-to-left entrance |
+| `float`         | Floating cards         |
+| `ringBell`      | Recruiter notification |
+| `progressFill`  | Skill bars             |
+| `countUp`       | Score increment        |
+| `slideRotate`   | Stats cards            |
+| `cursorExpand`  | Cursor interactions    |
+
+---
+
+# Custom Cursor System
+
+`useCursor.ts` powers:
+
+* Dot + ring cursor
+* Hover scaling
+* Drag-state cursor changes
+* Context-aware interaction feedback
+
+## States
+
+| Context      | Cursor Mode |
+| ------------ | ----------- |
+| Default      | Dot + ring  |
+| Hover button | Expanded    |
+| Draggable    | Grab        |
+| Dragging     | Grabbing    |
+
+---
+
+# Environment Variables
+
+Create:
+
+```txt
+.env.local
+```
+
+Add:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1
+NEXT_PUBLIC_WS_URL=ws://localhost:8080/ws
+```
+
+---
+
+# Backend Integration
+
+SkillBridge frontend is designed to integrate with a Go backend service.
+
+## Backend Requirements
+
+### API Base
+
+```txt
+/api/v1
+```
+
+### WebSocket Gateway
+
+```txt
+/ws
+```
+
+### Authentication
+
+Backend should:
+
+* Set HttpOnly session cookies
+* Provide CSRF cookie
+* Validate session server-side
+* Handle refresh lifecycle
+
+---
+
+# Development Standards
+
+## Component Rules
+
+* Components should remain presentation-focused
+* Business logic belongs in backend/services
+* Hooks manage behavior
+* UI should remain declarative
+
+---
+
+## Styling Rules
+
+* Tailwind utility-first styling
+* Shared animation utilities in globals
+* Responsive-first design
+* Minimal inline styles
+
+---
+
+## TypeScript Rules
+
+* Strict typing enabled
+* Shared types centralized
+* No `any` usage
+* DTO-driven API contracts
+
+---
+
+# Planned Pages
+
+## Authentication
+
+* [ ] `app/(auth)/login/page.tsx`
+* [ ] `app/(auth)/register/page.tsx`
+
+## User Experience
+
+* [ ] `app/dashboard/page.tsx`
+* [ ] `app/roadmap/[id]/page.tsx`
+* [ ] `app/workspace/[moduleId]/page.tsx`
+
+## Recruiter Tools
+
+* [ ] `app/recruiter/page.tsx`
+
+## Shared UI System
+
+* [ ] `components/ui/button.tsx`
+* [ ] `components/ui/card.tsx`
+* [ ] `components/ui/badge.tsx`
+* [ ] `components/ui/modal.tsx`
+
+---
+
+# Recommended Future Additions
+
+## Infrastructure
+
+* Docker support
+* CI/CD workflows
+* Turborepo monorepo setup
+* Storybook UI documentation
+
+## Frontend Features
+
+* Dark/light theme engine
+* Offline caching
+* Command palette
+* Notification center
+* Realtime collaboration
+
+## Performance
+
+* Route-level code splitting
+* Edge caching
+* Image optimization
+* Skeleton loaders
+* Virtualized lists
+
+---
+
+# Deployment
+
+## Recommended Platforms
+
+| Platform | Recommended            |
+| -------- | ---------------------- |
+| Frontend | Vercel                 |
+| Backend  | Fly.io / Railway / VPS |
+| Database | PostgreSQL             |
+| Realtime | Native Go WS gateway   |
+
+---
+
+# Contributing
+
+## Branch Naming
+
+```txt
+feature/...
+fix/...
+refactor/...
+```
+
+## Commit Convention
+
+```txt
+feat:
+fix:
+refactor:
+docs:
+style:
+```
+
+---
+
+# License
+
+Private proprietary project — SkillBridge v2.0
